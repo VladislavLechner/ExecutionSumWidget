@@ -102,8 +102,11 @@ QVariant ExecutionSumWidget::resultOfExecution()
 
 void *getWidgetInstance(std::string pathForScan)
 {
-    if(!m_instance)
+    if(m_instance == nullptr)
+    {
+        qDebug() << m_instance;
         m_instance = new ExecutionSumWidget(nullptr, pathForScan);
+    }
     return m_instance;
 }
 
@@ -112,10 +115,12 @@ void *getWidgetInstance(std::string pathForScan)
 void releaseWidgetInstance(QWidget* instance)
 {
     instance = reinterpret_cast<ExecutionSumWidget *>(instance);
+//    instance->close();
     if(instance != nullptr)
         {
+//            qDebug() << instance << m_instance;
             delete instance;
-            instance = nullptr;
+            m_instance = nullptr;
         }
 }
 
