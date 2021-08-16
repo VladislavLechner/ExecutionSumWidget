@@ -8,6 +8,9 @@
 #include <QPushButton>
 #include <QMessageBox>
 #include <QTimer>
+#include <QDir>
+
+#include <dlfcn.h>
 
 #include "/home/semen/qtProjects/QtProjects/AbstractClasses/abstractclasses.h"
 #include "readdirectory.h"
@@ -33,14 +36,18 @@ private:
     QPushButton  * m_continue;
 
     ReadDirectory m_readDirectory;
+
     std::string m_pathForScan;
+    void * m_lib;
+
 
 private:
     void memoryAllocation() override;
     void setUpWidgets() override;
     void setUpProgress() override;
     QVariant resultOfExecution() override;
-//    void setData(std::string path, std::string format, std::string operation) override;
+    void callback(const std::string& path, const std::string& format, const std::string& operation);
+    void releaseWidgetInstance(AbstractExecutionWidget *instance);
 
 };
 
