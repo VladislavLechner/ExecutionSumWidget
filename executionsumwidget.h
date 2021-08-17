@@ -45,9 +45,8 @@ private:
     void memoryAllocation() override;
     void setUpWidgets() override;
     void setUpProgress() override;
-    QVariant resultOfExecution() override;
-    void callback(const std::string& path, const std::string& format, const std::string& operation);
-    void releaseWidgetInstance(AbstractExecutionWidget *instance);
+//    void callback(const std::string& path, const std::string& format, const std::string& operation);
+//    void releaseWidgetInstance(AbstractExecutionWidget *instance);
 
 };
 

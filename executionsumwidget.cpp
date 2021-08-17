@@ -94,51 +94,46 @@ void ExecutionSumWidget::setUpProgress()
     m_timer->start(50);
 }
 
-QVariant ExecutionSumWidget::resultOfExecution()
-{
-    return {};
-}
 
-void ExecutionSumWidget::callback(const std::string &path, const std::string &format, const std::string &operation)
-{
-    std::string pathLib(m_pathForScan + QDir::separator().toLatin1() + "libexecutionSumWidget.so");
-    m_lib = dlopen(pathLib.c_str(), RTLD_NOW);
+//void ExecutionSumWidget::callback(const std::string &path, const std::string &format, const std::string &operation)
+//{
+//    std::string pathLib(m_pathForScan + QDir::separator().toLatin1() + "libexecutionSumWidget.so");
+//    m_lib = dlopen(pathLib.c_str(), RTLD_NOW);
 
-    if (m_lib == nullptr)
-    {
-        throw std::runtime_error(dlerror());
-        return;
-    }
-    dlerror();
+//    if (m_lib == nullptr)
+//    {
+//        throw std::runtime_error(dlerror());
+//        return;
+//    }
+//    dlerror();
 
-    typedef void *(*GetInputWidget)(std::string);
-    GetInputWidget getInputWidget = nullptr;
+//    typedef void *(*GetInputWidget)(std::string);
+//    GetInputWidget getInputWidget = nullptr;
 
-    getInputWidget = reinterpret_cast<GetInputWidget>(dlsym(m_lib, "getWidgetInstance")); // приводим к указателю на фукцнию
-    if (getInputWidget == nullptr)
-    {
-        throw std::runtime_error(dlerror());
-//        qDebug() << "Cannot load create function: " << dlerror() << '\n';
-        return;
-    }
-    dlerror();
+//    getInputWidget = reinterpret_cast<GetInputWidget>(dlsym(m_lib, "getWidgetInstance")); // приводим к указателю на фукцнию
+//    if (getInputWidget == nullptr)
+//    {
+//        throw std::runtime_error(dlerror());
+////        qDebug() << "Cannot load create function: " << dlerror() << '\n';
+//        return;
+//    }
+//    dlerror();
 
-    outputWidget = reinterpret_cast<AbstractOutputWidget *>(getInputWidget(m_pathForScan));
-    if (outputWidget == nullptr)
-    {
-        throw std::runtime_error("Не удалось открыть библиотеку");
-        return;
-    }
-    qDebug() << outputWidget;
-    outputWidget->setData(m_readDirectory.resultOfMd5Sum(),m_readDirectory.otherFiles(),m_readDirectory.countOfFiles());
-    outputWidget->show();
-//    executionWidget->startExecution();
-}
+//    outputWidget = reinterpret_cast<AbstractOutputWidget *>(getInputWidget(m_pathForScan));
+//    if (outputWidget == nullptr)
+//    {
+//        throw std::runtime_error("Не удалось открыть библиотеку");
+//        return;
+//    }
+//    qDebug() << outputWidget;
+//    outputWidget->setData(m_readDirectory.resultOfMd5Sum(),m_readDirectory.otherFiles(),m_readDirectory.countOfFiles());
+//    outputWidget->show();
+////    executionWidget->startExecution();
+//}
 
 
 void *getWidgetInstance(std::string pathForScan)
 {
-    qDebug() << m_instance;
     if(m_instance == nullptr)
     {
         m_instance = new ExecutionSumWidget(nullptr, pathForScan);
@@ -151,10 +146,8 @@ void *getWidgetInstance(std::string pathForScan)
 void releaseWidgetInstance(QWidget* instance)
 {
     instance = reinterpret_cast<ExecutionSumWidget *>(instance);
-//    instance->close();
     if(instance != nullptr)
         {
-//            qDebug() << instance << m_instance;
             delete instance;
             m_instance = nullptr;
         }
